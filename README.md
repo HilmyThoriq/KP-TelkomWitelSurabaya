@@ -21,4 +21,5 @@ In this Project we're creating a web application for CDC Telkom Witel Surabaya P
 - Alert message when importing CSV file are failed (Kode Mitra need to be 11 Digits)
 - Alert and make the application unable to receive file other than Image and PDF files
 - Add edit password feature in superadmin
-- creating folder based on partners for storing file not included in the same folder for all partners
+- Creating folder based on partners for storing file not included in the same folder for all partners
+- Seassion bug when pressing back button on browser (not from application)
