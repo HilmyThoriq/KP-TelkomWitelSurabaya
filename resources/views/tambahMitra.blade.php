@@ -123,6 +123,9 @@
       if (inputField.value.replace(/\D/g, '').length < 11) {
       event.preventDefault();
       alert("Silahkan masukkan 11 Digit Kode Mitra");
+      } else if (inputField.value.replace(/\D/g, '').length > 11){
+      event.preventDefault();
+      alert("Silahkan hanya masukkan 11 Digit Kode Mitra");
       }
       });
     </script>

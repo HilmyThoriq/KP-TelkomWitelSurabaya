@@ -124,8 +124,17 @@ class MitraController extends Controller
 
     public function upload(Request $request){
 
-        $file = Lampiran::create($request->all());
+        $rules = [
+            'namafile' => 'required|mimes:pdf,jpeg,png,jpg',
+        ];
+        
+        $messages = [
+            'namafile.mimes' => 'The uploaded file must be in PDF, JPEG, PNG, or JPG format.',
+        ];
 
+        $request->validate($rules,$messages);
+
+        $file = Lampiran::create($request->all());
         if($request->hasFile('namafile')){
             $request->file('namafile')->move(storage_path('/app/file/'), $request->file('namafile')->getClientOriginalName());
             $file->namafile = $request->file('namafile')->getClientOriginalName();

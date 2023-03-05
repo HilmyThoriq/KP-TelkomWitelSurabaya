@@ -73,6 +73,11 @@
                     <form action="/upload" method="POST" enctype="multipart/form-data">
                     @csrf
                   <div class="mb-3">
+                  @if ($errors->has('namafile'))
+                      <div class="alert alert-danger">
+                          {{ $errors->first('namafile') }}
+                      </div>
+                  @endif
                     <label for="Mitra" class="form-label">Jenis File</label>
                     <input type="text" class="form-control" name="jenisfile" id="exampleInputEmail1" aria-describedby="emailHelp" required autofocus>
                     <div id="emailHelp" class="form-text">Wajib Diisi!</div>
