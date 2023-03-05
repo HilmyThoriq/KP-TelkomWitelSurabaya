@@ -149,7 +149,7 @@
             @csrf
           <div class="modal-body">
             <div class="form-group">
-              <input type="file" name="file_excel" required>
+              <input type="file" name="file_excel" required accept=".csv">
             </div>
             <div class="mt-2" style="color:grey;">Pastikan Kodemitra ada 11 Digit</div>
           </div>
