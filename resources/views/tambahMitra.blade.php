@@ -91,7 +91,7 @@
             
                   <div class="mb-3">
                     <label for="Mitra" class="form-label">Kode Mitra</label>
-                    <input type="number" class="form-control" name="kodemitra" id="kodeForm" aria-describedby="emailHelp" required autofocus>
+                    <input type="text" class="form-control" name="kodemitra" id="kodeForm" aria-describedby="emailHelp" required autofocus>
                     <div id="emailHelp" class="form-text">Wajib Diisi 11!</div>
                   </div>
 
@@ -120,10 +120,10 @@
       const inputField = document.getElementById("kodeForm");
 
       form.addEventListener("submit", (event) => {
-      if (inputField.value.replace(/\D/g, '').length < 11) {
+      if (inputField.value.replace(/[^a-zA-Z0-9]/g, '').length < 11) {
       event.preventDefault();
       alert("Silahkan masukkan 11 Digit Kode Mitra");
-      } else if (inputField.value.replace(/\D/g, '').length > 11){
+      } else if (inputField.value.replace(/[^a-zA-Z0-9]/g, '').length > 11){
       event.preventDefault();
       alert("Silahkan hanya masukkan 11 Digit Kode Mitra");
       }

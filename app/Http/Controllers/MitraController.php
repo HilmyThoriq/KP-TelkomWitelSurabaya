@@ -16,9 +16,15 @@ class MitraController extends Controller
 
         if($request->has('search')){
             $data = Mitra::where('namamitra', 'LIKE', '%' .$request->search. '%')->paginate(5);
+            if($data->isEmpty()){
+                return redirect()->route('daftarMitra', compact('data'))->with('failed', 'Data Mitra tidak ditemukan');
+            }else return redirect()->route('daftarMitra', compact('data'))->with('success', 'Data Mitra ditemukan');
         }
         elseif($request->has('searchkodemitra')){
             $data = Mitra::where('kodemitra', 'LIKE', '%' .$request->searchkodemitra. '%')->paginate(5);
+            if($data->isEmpty()){
+                return redirect()->route('daftarMitra', compact('data'))->with('failed', 'Data Mitra tidak ditemukan');
+            }else return redirect()->route('daftarMitra', compact('data'))->with('success', 'Data Mitra ditemukan');
         }
         else{
             $data = Mitra::paginate(5);
@@ -32,9 +38,15 @@ class MitraController extends Controller
 
         if($request->has('search')){
             $data = Mitra::where('namamitra', 'LIKE', '%' .$request->search. '%')->paginate(5);
+            if($data->isEmpty()){
+                return redirect()->route('daftarMitra_Admin', compact('data'))->with('failed', 'Data Mitra tidak ditemukan');
+            }else return redirect()->route('daftarMitra_Admin', compact('data'))->with('success', 'Data Mitra ditemukan');
         }
         elseif($request->has('searchkodemitra')){
             $data = Mitra::where('kodemitra', 'LIKE', '%' .$request->searchkodemitra. '%')->paginate(5);
+            if($data->isEmpty()){
+                return redirect()->route('daftarMitra_Admin', compact('data'))->with('failed', 'Data Mitra tidak ditemukan');
+            }else return redirect()->route('daftarMitra_Admin', compact('data'))->with('success', 'Data Mitra ditemukan');
         }
         else{
             $data = Mitra::paginate(5);
@@ -53,33 +65,6 @@ class MitraController extends Controller
     public function insertData(Request $request){
 
         $data = Mitra::create($request->all());
-        
-        if($request->hasFile('datalengkap')){
-            $request->file('datalengkap')->move('datalengkap/', $request->file('datalengkap')->getClientOriginalName());
-            $data->datalengkap = $request->file('datalengkap')->getClientOriginalName();
-            $data->save();
-        }
-
-        if($request->hasFile('proposal')){
-            $request->file('proposal')->move('proposal/', $request->file('proposal')->getClientOriginalName());
-            $data->proposal = $request->file('proposal')->getClientOriginalName();
-            $data->save();
-        }
-
-        
-        if($request->hasFile('sp3k')){
-            $request->file('sp3k')->move('sp3k/', $request->file('sp3k')->getClientOriginalName());
-            $data->sp3k = $request->file('sp3k')->getClientOriginalName();
-            $data->save();
-        }
-
-        
-        if($request->hasFile('agunan')){
-            $request->file('agunan')->move('agunan/', $request->file('agunan')->getClientOriginalName());
-            $data->agunan = $request->file('agunan')->getClientOriginalName();
-            $data->save();
-        }
-    
         return redirect()->route("daftarMitra")->with('success', 'Data Mitra Berhasil Di Tambahkan!');
     }
 
@@ -152,27 +137,17 @@ class MitraController extends Controller
     }
 
     public function importExcel(Request $request){
-        // $data = $request->file('file_excel');
-        // $namafile = $data->getClientOriginalName();
-        // $data->move(storage_path('/app/excel/MitraData'), $namafile);
-        
-        // Excel::import(new MitraImport, \storage_path('/app/excel/MitraData/'.$namafile));
-        // return \redirect()->back();
-
-        Excel::import(new MitraImport, $request->file('file_excel'));
-        $import_errors = $request->session()->get('import_errors');
-        if ($import_errors) {
-            return redirect()->back()->with('failed','Imported Mitra Failed');
-        } else{
-            return redirect()->back()->with('success', 'Imported Mitra berhasil');
+        try {
+            Excel::import(new MitraImport, $request->file('file_excel'));
+            return redirect()->back()->with('success', 'File CSV Berhasil di Import');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorMessage = "Terdapat Kesalahan Saat Mengimport CSV:\n";
+            foreach ($failures as $failure) {
+                $errorMessage .= "- Row " . $failure->row() . ": " . implode(", ", $failure->errors()) . "\n";
+            }
+            return redirect()->back()->with('failed', $errorMessage);
         }
     }
-    
-    // public function downloadFile(){
-    //         // $filename = $request->datalengkap;
-    //         // $filepath = public_path(). "/datalengkap/" . $filename;
-
-    //        return response()->download("/public/datalengkap/dummy-excel.csv");
-    //     } 
     }
 

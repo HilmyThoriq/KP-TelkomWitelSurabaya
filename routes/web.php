@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Download;
 use App\Http\Controllers\MitraController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,18 +16,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::group(['middleware' => ['check', 'prevent-back-history']], function(){
+    Route::get('/', [AdminController::class, 'home'])->name('home');
+});
 
 Route::group(['middleware' => ['guest']], function(){
     Route::post('/login',[AdminController::class, 'login'])->name('login');
 });
 
+// Route::group(['middleware' => ['prevent-back-history']], function(){
 Route::post('/logout',[AdminController::class, 'logout'])->name('logout');
-
-Route::group(['middleware' => ['auth', 'hakakses:admin']], function(){
+// });
+Route::group(['middleware' => ['auth', 'hakakses:admin', 'prevent-back-history']], function(){
     Route::get('/daftarMitra',[MitraController::class, 'index'])->name('daftarMitra');
     Route::get('/tambahMitra',[MitraController::class, 'tambahMitra'])->name('tambahMitra');
     Route::post('/insertData',[MitraController::class, 'insertData'])->name('insertData');
@@ -41,7 +42,7 @@ Route::group(['middleware' => ['auth', 'hakakses:admin']], function(){
     Route::get('/download', [Download::class, 'download'])->name('download');
 });
 
-Route::group(['middleware' => ['auth', 'hakakses:superadmin']], function(){
+Route::group(['middleware' => ['auth', 'hakakses:superadmin', 'prevent-back-history']], function(){
     Route::get('/daftarAdmin',[adminController::class, 'daftarAdmin'])->name('daftarAdmin');
     Route::get('/tambahAdmin',[adminController::class, 'tambahAdmin'])->name('tambahAdmin');
     Route::post('/insertAdmin',[adminController::class, 'insertAdmin'])->name('insertAdmin');

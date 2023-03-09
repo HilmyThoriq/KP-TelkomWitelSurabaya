@@ -14,6 +14,14 @@ class MitraImport implements ToModel, WithValidation
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+    public function rules(): array
+    {
+        return [
+            '*.1' => ['required', 'regex:/^[a-zA-Z0-9]{11}$/'],
+            // Check if it's 11 digits
+        ];
+    }
+
     public function model(array $row)
     {
         return new Mitra([
@@ -22,23 +30,5 @@ class MitraImport implements ToModel, WithValidation
             'catatan' => @$row[2],
         ]);
 
-    }
-
-    public function rules(): array
-    {
-        return [
-            '*.1' => ['required', 'digits:11'],
-            // Check if it's 11 digits
-        ];
-    }
-
-    public function onFailure(array $row, $failures)
-    {
-        $error_message = '';
-        foreach ($failures as $failure) {
-            $row = $failure->row();
-            $error_message .= "Row $row: " . implode('; ', $failure->errors()) . "<br>";
-        }
-        Session::flash('import_errors', $error_message);
     }
 }

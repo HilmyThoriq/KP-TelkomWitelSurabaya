@@ -5,9 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class adminController extends Controller
 {
+    public function home(){
+        // if ($request->hasCookie('laravel_session')) {
+        //     // Get the authenticated user
+        //     $role = Auth::user()->role;
+
+        //     // Check the user's role and redirect accordingly
+        //     if ($role == 'admin') {
+        //         return redirect('/daftarMitra');
+        //     } elseif ($role == 'superadmin') {
+        //         return redirect('/daftarAdmin');
+        //     }
+        // }
+        // dd(session()->has('password'));
+        return view('welcome');
+    }
 
     public function login(Request $request){
         $credentials = $request->validate([
@@ -19,6 +35,7 @@ class adminController extends Controller
             $role = Auth::user()->role;
             // dd($role);
             if($role == "admin"){
+                // dd(auth()->user());
                 $request->session()->regenerate();
                 return redirect('/daftarMitra');
             }
