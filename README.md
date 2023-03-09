@@ -16,9 +16,9 @@ In this Project we're creating a web application for CDC Telkom Witel Surabaya P
 - Storing record of data at once by importing CSV file
 - Delete entire file of partners if the partners data are deleted
 - SuperAdmin to create and delete admin account
+- Can't access login page using back button from browser
+- Alert message showing when importing CSV file are failed (Kode Mitra need to be 11 Alphanumberics) 
 
 ##### Feature that needs to be updated
-- Alert message not showing when importing CSV file are failed (Kode Mitra need to be 11 Digits)
 - Add edit password feature in superadmin
 - Creating folder based on partners for storing file not included in the same folder for all partners
-- Seassion bug when pressing back button on browser (not from application) aka no session expire 
